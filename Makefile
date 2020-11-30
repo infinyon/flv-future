@@ -3,20 +3,9 @@ RUST_DOCKER_IMAGE=rust:latest
 build-all:
 	cargo build --all-features
 
-test-all:	test-tls-all
-	cargo test --all-features
-
-test-tls-all:	test_rustls test_native_tls_pk12 test_native_tls_x509
-
-test_rustls:
-	cargo test --features rust_tls
-
-test_native_tls_pk12:
-	cargo test --features native2_tls test_native_tls_pk12
-
-test_native_tls_x509:
-	cargo test --features native2_tls test_native_tls_x509
-
+test-all:
+	RUST_LOG=info,fluvio_future=trace cargo test --all-features -- --nocapture
+	
 install_windows_on_mac:
 	rustup target add x86_64-pc-windows-gnu
 	brew install mingw-w64
